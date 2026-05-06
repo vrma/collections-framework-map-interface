@@ -4,6 +4,7 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 
 public class App {
@@ -40,11 +41,25 @@ public class App {
     	
     	// Creacion del mapa a partir del listado de argumentos
     	
-    	Map<String, Long> m = listadoDeArgumentos.stream()
-    			.collect(Collectors.groupingBy(nombre -> nombre, 
-    					Collectors.counting()));
+    	Map<String, Long> m = null;
     	
-    	System.out.println("Mapa resultante: " + m);
+    	// Variante # 1 de creacion del mapa a partir de recorrer el listado de argumentos
+    	// utilizando Operaciones de Agregado (Tuberia, metodos de la clase Stream, lambda,
+    	// metodos por referencia, en fin, Programacion Funcional)
+    	
+    	m = listadoDeArgumentos.stream()
+    		 .collect(Collectors.groupingBy(Function.identity(), 
+    				Collectors.counting()));
+    	
+    	System.out.println(m);
+    	
+    	// Variante # 2 (Recomendada)
+    	
+    	var m2 = listadoDeArgumentos.stream()
+    				.collect(Collectors.groupingBy(nombre -> nombre,
+    						Collectors.counting()));
+    	
+    	System.out.println(m2);
     	
    	
     	
