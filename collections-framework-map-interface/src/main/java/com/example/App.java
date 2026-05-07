@@ -3,13 +3,16 @@ package com.example;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.Month;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.function.Function;
 import java.util.stream.Collectors;
+
+import static java.util.stream.Collectors.*;
 
 public class App {
 	
@@ -119,14 +122,14 @@ public class App {
     			.primerApellido("Garzon")
     			.segundoApellido("Villar")
     			.genero(Genero.MUJER)
-    			.fechaNacimiento(LocalDate.of(2000, Month.AUGUST, 4))
+    			.fechaNacimiento(LocalDate.of(2001, Month.JUNE, 7))
     			.dpto(Dpto.FINANZAS)
     			.salario(new BigDecimal(3300.50))
     			.fechaAlta(LocalDate.of(2022, Month.SEPTEMBER, 25))
     			.build();
      	
      	Empleado emp6 = Empleado.builder()
-    			.nombre("Francisca")
+    			.nombre("Mariana")
     			.primerApellido("Alvarez")
     			.segundoApellido("Glez")
     			.genero(Genero.MUJER)
@@ -137,7 +140,7 @@ public class App {
     			.build();
      	
      	Empleado emp7 = Empleado.builder()
-    			.nombre("Maricarmen")
+    			.nombre("Mariana")
     			.primerApellido("Becerra")
     			.segundoApellido("Mtnez")
     			.genero(Genero.MUJER)
@@ -230,16 +233,72 @@ public class App {
      	 * Concretamente, en este caso, el Collectors.toList() sobra.*/
      	
      	Map<Genero, List<Empleado>> empleadosPorGenero = listadoGenerico.stream()
-     			.filter(obj -> obj instanceof Empleado)
-     			.map(obj -> (Empleado) obj)
+     			.filter(objeto -> objeto instanceof Empleado)
+     			.map(objeto -> (Empleado) objeto)
      			.collect(Collectors.groupingBy(Empleado::getGenero));
         			
         					
      	
      	System.out.println("Empleados por Genero: " + empleadosPorGenero);
+     	
+     	
+     	/* Obtener una coleccion que agrupe empleados por Dpto y Genero */
+     	
+        Map<Dpto, Map<Genero, List<Empleado>>> empleadosPorDptoYGenero = listadoGenerico.stream()
+        		.filter(o -> o instanceof Empleado)
+        		.map(o -> (Empleado) o)
+        		.collect(Collectors.groupingBy(Empleado::getDpto,
+        				Collectors.groupingBy(Empleado::getGenero)));
+        
+        /* Obtener una coleccion que agrupe nombres de empleados por Genero,
+         * sin que se dupliquen los nombres */
+        
+        Map<Genero, Set<String>> nombresPorGenero = listadoGenerico.stream()
+        		.filter(o -> o instanceof Empleado)
+        		.map(o -> (Empleado) o)
+        		.collect(Collectors.groupingBy(Empleado::getGenero, 
+        				Collectors.mapping(Empleado::getNombre,
+        						Collectors.toSet())));
+        
+        System.out.println(nombresPorGenero);
+        
+        /* Obtener una coleccion que agrupe nombres de empleados, separados por comas, 
+         * por edad del empleado */
+        
+        Map<Long, String> nombresPorEdad = listadoGenerico.stream()
+        		.filter(o -> o instanceof Empleado)
+        		.map(o -> (Empleado) o)
+        		.collect(Collectors.groupingBy(emp -> 
+        		      ChronoUnit.YEARS.between(emp.getFechaNacimiento(),
+        		    		  LocalDate.now()), 
+        		      Collectors.mapping(Empleado::getNombre,
+        		    		  Collectors.joining(","))));
+        
+        System.out.println(nombresPorEdad);
+        
+        
+        /* Obtener una coleccion que agrupe salario promedio por fecha de alta, 
+         * solamente para los empleados del genero MUJER */
+        
+        Map<LocalDate, Map<Genero, Double>> salarioMedioPorFechaAlta = listadoGenerico.stream()
+        		.filter(o -> o instanceof Empleado e && e.getGenero().equals(Genero.MUJER))
+        		.map(o -> (Empleado) o)
+        		.collect(groupingBy(Empleado::getFechaAlta,
+        				groupingBy(Empleado::getGenero,
+        				averagingDouble(e -> e.getSalario().doubleValue()))));
+        
+        System.out.println(salarioMedioPorFechaAlta);
+        
     	
     }
 }
+
+
+
+
+
+
+
 
 
 
