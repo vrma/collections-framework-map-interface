@@ -67,7 +67,7 @@ public class App {
     	
     	/* Creacion de listado de empleados, estudiantes y personas tambien */
     	
-    	List<? extends Persona> listadoGenerico = null;
+    	List<? super Persona> listadoGenerico = new ArrayList<>();
     	
     	Empleado emp1 = Empleado.builder()
     			.nombre("Jorge Francisco")
@@ -191,19 +191,30 @@ public class App {
      			.fechaAltaFacultad(LocalDate.of(2020, Month.JANUARY, 6))
      			.build();
      	
-     	listadoGenerico = Arrays.asList(emp1, 
-     			emp2, 
-     			emp3, 
-     			emp4, 
-     			emp5, 
-     			emp6, 
-     			emp7, 
-     			emp8, 
-     			emp9, 
-     			emp10,
-     			estudiante1);
+//     	listadoGenerico = Arrays.asList(emp1, 
+//     			emp2, 
+//     			emp3, 
+//     			emp4, 
+//     			emp5, 
+//     			emp6, 
+//     			emp7, 
+//     			emp8, 
+//     			emp9, 
+//     			emp10,
+//     			estudiante1);
      	
-     	// listadoGenerico.add(emp1);
+     	listadoGenerico.add(emp1);
+     	listadoGenerico.add(emp2);
+     	listadoGenerico.add(emp3);
+     	listadoGenerico.add(emp4);
+     	listadoGenerico.add(emp5);
+     	listadoGenerico.add(emp6);
+     	listadoGenerico.add(emp7);
+     	listadoGenerico.add(emp8);
+     	listadoGenerico.add(emp9);
+     	listadoGenerico.add(emp10);
+     	listadoGenerico.add(estudiante1);
+     	
      	
      	/* Crear una coleccion que agrupe empleados por genero */   
      	
