@@ -67,7 +67,7 @@ public class App {
     	
     	/* Creacion de listado de empleados, estudiantes y personas tambien */
     	
-    	List<? extends Persona> listadoGenerico = new ArrayList<>();
+    	List<? extends Persona> listadoGenerico = null;
     	
     	Empleado emp1 = Empleado.builder()
     			.nombre("Jorge Francisco")
