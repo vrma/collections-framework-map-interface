@@ -6,6 +6,7 @@ import java.time.Month;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -78,7 +79,7 @@ public class App {
     			.segundoApellido("Villar")
     			.genero(Genero.HOMBRE)
     			.fechaNacimiento(LocalDate.of(1973, Month.JUNE, 23))
-    			.dpto(Dpto.INFORMATICA)
+    			.dpto(Dpto.CONTABILIDAD)
     			.salario(new BigDecimal(3500.50))
     			.fechaAlta(LocalDate.of(1990, Month.SEPTEMBER, 22))
     			.build();
@@ -328,23 +329,57 @@ public class App {
         
         // Primero con for mejorado
         
-        for ( Map.Entry<Dpto, Map<Genero, List<Empleado>>> entry1 : empleadosPorDptoYGenero.entrySet()) {
+        for (Map.Entry<Dpto, Map<Genero, List<Empleado>>> entry1 : empleadosPorDptoYGenero.entrySet()) {
         	
-        	Dpto k = entry1.getKey();
-        	Map<Genero, List<Empleado>>	 v = entry1.getValue();
+        	// La clave de la entrada del mapa entry1 (Dpto)
         	
-        	for (Map.Entry<Genero, List<Empleado>> entry2: v.entrySet()) {
+        	Dpto clave1 = entry1.getKey();
+        	
+        	// La segunda clave de la entrada entry1 (Genero), es mas de una para cada Dpto
+        	// ¿Como obtenemos dicha clave? A partir del value de la entrada entry1
+        	
+        	Map<Genero, List<Empleado>> valor1 = entry1.getValue();
+        	
+        	for (Map.Entry<Genero, List<Empleado>> entry2 : valor1.entrySet()) {
         		
-        		System.out.println("Del Dpto: " +  k + ", y del genero: " + entry2.getKey());
-        		System.out.println("Los empleados se muestran a continuacion: ");
+        		Genero clave2 = entry2.getKey();
+        		List<Empleado> empleados = entry2.getValue();
+        		
+        		System.out.println("Del Departamento: " + clave1 + ", y del Genero: " + clave2);
+        		System.out.println("Los empleados, ordenados por antiguedad son: ");
+        		
+        		// Ordenamos la lista de empleados segun el Orden Natural de la clase Empleado
+        		Collections.sort(empleados);
+        		
+        		for ( Empleado empleado : empleados ) {
+        			
+        			System.out.println(empleado);
+        		}
+        		
         	}
         	
         	
-        	
-        	
         }
+  
         
-    	
+        // Segundo con Operaciones de Agregado
+        
+        System.out.println("------ Con OPERACIONES DE AGREGADO ----------");
+        
+        empleadosPorDptoYGenero.entrySet().forEach(entry1 -> {
+        	
+        	System.out.println("Del Dpto: " + entry1.getKey());
+        	
+        	entry1.getValue().entrySet().forEach(entry2 -> {
+        		
+        		System.out.println("Del Genero: " + entry2.getKey());
+        		
+        		System.out.println("La lista de empleados ordenada segun el orden natural por antiguedad ");
+        		
+        		entry2.getValue().stream().sorted().forEach(System.out::println);
+        		
+        	});
+        });
     }
 }
 
