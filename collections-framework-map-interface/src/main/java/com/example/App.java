@@ -289,6 +289,61 @@ public class App {
         
         System.out.println(salarioMedioPorFechaAlta);
         
+        /* Para recorrer un Mapa hay que utilizar una de las tres vistas de colecciones 
+         * (Collections View), para especificar si queremos recorrer la claves del mapa,
+         * los valores del mapa o todas las entradas del mapa, incluyendo claves y valores */
+        
+        /* Como ejemplo: (Primeramente utilizando for mejorado)
+         * 
+         * Recorrer el mapa m y mostrar solamente los valores que sean par
+         * 
+         * */
+        
+        for (Map.Entry<String, Long> entry : m.entrySet()) {
+        	
+        	String k = entry.getKey();
+        	Long v = entry.getValue();
+        	
+        	if (v % 2 == 0) {
+        		System.out.println(v);
+        	}
+        }
+        
+        // Lo mismo pero con operaciones de agregado
+        
+        System.out.println("Recorriendo el mapa m con Operaciones de Agregado");
+        
+        m.entrySet().forEach(entry -> {
+        	
+        	if (entry.getValue() % 2 == 0) {
+        		System.out.println(entry.getValue());
+        	}
+        });
+        
+        
+        /* Recorrer el mapa empleadosPorDptoYGenero y mostrar los empleados ordenados segun 
+         * el orden natural por antiguedad, los mas antiguos primero
+         * 
+         * */
+        
+        // Primero con for mejorado
+        
+        for ( Map.Entry<Dpto, Map<Genero, List<Empleado>>> entry1 : empleadosPorDptoYGenero.entrySet()) {
+        	
+        	Dpto k = entry1.getKey();
+        	Map<Genero, List<Empleado>>	 v = entry1.getValue();
+        	
+        	for (Map.Entry<Genero, List<Empleado>> entry2: v.entrySet()) {
+        		
+        		System.out.println("Del Dpto: " +  k + ", y del genero: " + entry2.getKey());
+        		System.out.println("Los empleados se muestran a continuacion: ");
+        	}
+        	
+        	
+        	
+        	
+        }
+        
     	
     }
 }
